@@ -1,105 +1,146 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useState, useEffect, useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
+import "./Navbar.css";
 
-const Navbar = () => {
-  const navigate = useNavigate();
+export default function Navbar() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef(null);
   const location = useLocation();
-  const token = localStorage.getItem('token');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    setIsMenuOpen(false); // Close menu on logout
-    navigate('/login');
-  };
+  const navItems = [
+    { label: "Home", path: "/" },
+    { label: "Hackathons", path: "/hackathons" },
+    { label: "Find Teammates", path: "/teammates" },
+    { label: "Dashboard", path: "/dashboard" },
+  ];
 
-  // Close menu when route changes
   useEffect(() => {
-    setIsMenuOpen(false);
-  }, [location]);
-
-  // Close menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (isMenuOpen && !event.target.closest('.navbar-container')) {
-        setIsMenuOpen(false);
+    const handleClickOutside = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setMenuOpen(false);
       }
     };
 
-    document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, [isMenuOpen]);
-
-  // Prevent body scroll when menu is open
-  useEffect(() => {
-    if (isMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
+    if (menuOpen) {
+      document.addEventListener("pointerdown", handleClickOutside);
     }
-    
+
     return () => {
-      document.body.style.overflow = 'unset';
+      document.removeEventListener("pointerdown", handleClickOutside);
     };
-  }, [isMenuOpen]);
+  }, [menuOpen]);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 900) {
+        setMenuOpen(false);
+      }
+    };
 
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
-    <nav className="navbar">
-      <div className="navbar-container"> 
-        <Link to="/" className="nav-logo" onClick={closeMenu}>
-          TeamUP
-        </Link>
-        
-        {/* Hamburger Menu Button */}
-        <button 
-          className={`hamburger ${isMenuOpen ? 'active' : ''}`}
-          onClick={toggleMenu}
-          aria-label="Toggle menu"
-          aria-expanded={isMenuOpen}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+    <>
+      <nav className="navbar" ref={menuRef}>
+        <div className="navbar-inner">
+          {/* LOGO */}
+          <div className="navbar-logo">
+            <span className="logo-text-nav">
+              Team<span className="logo-up-nav">UP</span>
+            </span>
+          </div>
 
-        {/* Navigation Links */}
-        <div className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
-          <Link to="/" className="nav-item" onClick={closeMenu}>
-            Explore
-          </Link>
-          
-          {token ? (
-            <>
-              <Link to="/dashboard" className="nav-item" onClick={closeMenu}>
-                Dashboard
+          {/* DESKTOP NAV */}
+          <div className="nav-desktop">
+            {navItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`nav-item ${
+                  location.pathname === item.path ? "active" : ""
+                }`}
+              >
+                {item.label}
               </Link>
-              <button onClick={handleLogout} className="btn-logout-link">
-                Logout
-              </button>
-            </>
-          ) : (
-            <div className="nav-auth-group">
-              <Link to="/login" className="nav-login" onClick={closeMenu}>
-                Log in
-              </Link>
-              <Link to="/signup" className="nav-signup-btn" onClick={closeMenu}>
-                Sign up
-              </Link>
-            </div>
-          )}
+            ))}
+          </div>
+
+          {/* DESKTOP AUTH */}
+          <div className="auth-desktop">
+            <Link
+              to="/login"
+              className="login-btn-nav"
+              style={{ textDecoration: "none" }}
+            >
+              Log in
+            </Link>
+
+            <Link
+              to="/signup"
+              className="signup-btn-nav"
+              style={{ textDecoration: "none" }}
+            >
+              Sign up
+            </Link>
+          </div>
+
+          {/* HAMBURGER */}
+          <button
+            className={`hamburger ${menuOpen ? "open" : ""}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              setMenuOpen((prev) => !prev);
+            }}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
         </div>
-      </div>
-    </nav>
-  );
-};
 
-export default Navbar;
+        {/* MOBILE MENU */}
+        <div
+          className={`nav-mobile ${menuOpen ? "show" : ""}`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {navItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              className={`nav-item ${
+                location.pathname === item.path ? "active" : ""
+              }`}
+              onClick={() => setMenuOpen(false)}
+            >
+              {item.label}
+            </Link>
+          ))}
+
+          <div className="auth-mobile">
+            <Link
+              to="/login"
+              className="login-btn-nav"
+              onClick={() => setMenuOpen(false)}
+              style={{ textDecoration: "none" }}
+            >
+              Log in
+            </Link>
+
+            <Link
+              to="/signup"
+              className="signup-btn-nav"
+              onClick={() => setMenuOpen(false)}
+              style={{ textDecoration: "none" }}
+            >
+              Sign up
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      <div className="navbar-spacer" />
+    </>
+  );
+}
