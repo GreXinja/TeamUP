@@ -1,0 +1,231 @@
+.dashboard-chat {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.chat-header {
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-bottom: 1px solid #e5e7eb;
+  background: linear-gradient(135deg, #eef2ff, #f8fafc);
+}
+
+.chat-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4f46e5, #8b5cf6);
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4);
+}
+
+.chat-header h4 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.chat-header p {
+  margin: 0;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.chat-body {
+  flex: 1;
+  padding: 18px;
+  overflow-y: auto;
+  background: linear-gradient(#f9fafb, #f1f5f9);
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-body::-webkit-scrollbar {
+  width: 6px;
+}
+.chat-body::-webkit-scrollbar-thumb {
+  background: #c7d2fe;
+  border-radius: 10px;
+}
+
+.msg {
+  max-width: 68%;
+  padding: 12px 16px;
+  border-radius: 18px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  line-height: 1.4;
+  animation: fadeInUp 0.15s ease;
+  word-wrap: break-word;
+}
+
+.incoming {
+  background: #ffffff;
+  align-self: flex-start;
+  border-top-left-radius: 4px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+}
+
+.outgoing {
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  color: white;
+  align-self: flex-end;
+  border-top-right-radius: 4px;
+  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.35);
+}
+
+.chat-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  border-top: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  font-size: 14px;
+  outline: none;
+  transition:
+    border 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.chat-input input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+.chat-input button {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.35);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.chat-input button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(79, 70, 229, 0.45);
+}
+
+.chat-placeholder {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-chat {
+    border-radius: 0;
+  }
+
+  .msg {
+    max-width: 85%;
+  }
+}
+
+.chat-placeholder {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(#f9fafb, #f1f5f9);
+}
+
+.chat-placeholder-content {
+  text-align: center;
+  max-width: 360px;
+  padding: 24px;
+}
+
+.chat-placeholder-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.chat-placeholder-content h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.chat-placeholder-content p {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+
+.chat-placeholder-btn {
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.35);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.chat-placeholder-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(79, 70, 229, 0.45);
+}
+
+.empty-inbox {
+  margin-top: 40px;
+  text-align: center;
+  color: #6b7280;
+}
+
+.empty-inbox-icon {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+
+.empty-inbox span {
+  display: block;
+  font-size: 13px;
+  margin-top: 4px;
+}

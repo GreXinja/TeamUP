@@ -14,6 +14,9 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import Home from "./pages/Home";
 import Dashboard from "./components/Dashboard";
+import FindTeammates from "./components/FindTeammates";
+import EditProfile from "./components/EditProfile";
+import AllProfiles from "./components/AllProfiles";
 
 const PublicRoute = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -57,6 +60,9 @@ function AppWrapper() {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/dashboard/:userId" element={<Dashboard />} />
+        <Route path="/find-teammates/:userId" element={<FindTeammates />} />
+        <Route path="/edit-profile/:userId" element={<EditProfile />} />
+        <Route path="/browse-profiles" element={<AllProfiles />} />
       </Routes>
     </>
   );

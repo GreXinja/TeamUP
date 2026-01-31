@@ -1,4 +1,3 @@
-// HeroSection.jsx
 import "./Hero.css";
 
 export default function Hero() {
@@ -13,7 +12,8 @@ export default function Hero() {
 
           <h1 className="hero-title">
             Find Your <span className="grad">Dream Team</span>
-            <br />for Any Project
+            <br />
+            for Any Project
           </h1>
 
           <p className="hero-desc">
@@ -37,7 +37,9 @@ export default function Hero() {
         <div className="hero-right">
           <div className="match-card">
             <div className="user">
-              <div className="avatar purple">A</div>
+              <div className="avatar purple" style={{ color: "#fff" }}>
+                A
+              </div>
               <div>
                 <h4>Arjun Mehta</h4>
                 <p>React • Node.js • AWS</p>
@@ -46,7 +48,9 @@ export default function Hero() {
             </div>
 
             <div className="user">
-              <div className="avatar green">P</div>
+              <div className="avatar green" style={{ color: "#fff" }}>
+                P
+              </div>
               <div>
                 <h4>Priya Sharma</h4>
                 <p>Python • ML • TensorFlow</p>
@@ -55,7 +59,9 @@ export default function Hero() {
             </div>
 
             <div className="user">
-              <div className="avatar orange">R</div>
+              <div className="avatar orange" style={{ color: "#fff" }}>
+                R
+              </div>
               <div>
                 <h4>Rahul Kumar</h4>
                 <p>UI/UX • Figma • Flutter</p>
@@ -70,4 +76,3 @@ export default function Hero() {
     </section>
   );
 }
-

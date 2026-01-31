@@ -13,10 +13,10 @@ export default function Signup() {
     college: "",
     password: "",
     gender: "",
+    bio: "",
   });
 
   const navigate = useNavigate();
-
 
   const defaultSkills = [
     "React",
@@ -34,8 +34,8 @@ export default function Signup() {
     }
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && skillInput.trim()) {
       e.preventDefault();
       handleAddSkill();
     }
@@ -61,22 +61,23 @@ export default function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const payload = {
-      fullName: formData.fullName,
-      email: formData.email,
-      college: formData.college,
-      password: formData.password,
-      gender: formData.gender,
-      skills: skills,
-    };
-
     try {
+      const typedSkills = skillInput
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+
+      const finalSkills = [...new Set([...skills, ...typedSkills])];
+
       const res = await fetch("http://localhost:5000/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          ...formData,
+          skills: finalSkills,
+        }),
       });
 
       const data = await res.json();
@@ -85,20 +86,18 @@ export default function Signup() {
         toast.error(data.message || "Signup failed");
         return;
       }
-      // ✅ success toast
+
       toast.success("Account created successfully 🎉");
 
-          localStorage.setItem("token", data.token);
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
 
-
-      // optional: store token
-
-      // ✅ redirect after short delay
       setTimeout(() => {
-        navigate("http://localhost:5173/");
-      }, 1500);
+        navigate(`/dashboard/${data.user.id}`);
+      }, 1200);
     } catch (err) {
-      toast.error("Server error. Please try again.");
+      console.error(err);
+      toast.error("Unexpected error occurred");
     }
   };
 
@@ -192,6 +191,21 @@ export default function Signup() {
               </div>
 
               <div className="form-group">
+                <textarea
+                  name="bio"
+                  placeholder="Short bio (e.g. MERN developer, hackathon enthusiast)"
+                  className="form-input bio-input"
+                  value={formData.bio}
+                  onChange={handleInputChange}
+                  maxLength={120}
+                  required
+                />
+                <small className="char-count">
+                  {formData.bio?.length || 0}/120
+                </small>
+              </div>
+
+              <div className="form-group">
                 <input
                   type="password"
                   name="password"
@@ -223,12 +237,13 @@ export default function Signup() {
                 <div className="skill-input-wrapper">
                   <input
                     type="text"
-                    placeholder="Add a skill and press Enter"
                     className="form-input"
+                    placeholder="Add a skill and press Enter"
                     value={skillInput}
                     onChange={(e) => setSkillInput(e.target.value)}
-                    onKeyPress={handleKeyPress}
+                    onKeyDown={handleKeyDown}
                   />
+
                   <button
                     type="button"
                     className="add-skill-btn"

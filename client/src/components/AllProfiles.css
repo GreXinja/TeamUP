@@ -1,0 +1,163 @@
+.all-profiles-container {
+  padding: 32px;
+  max-width: 1300px;
+  margin: auto;
+}
+
+.all-profiles-container h1 {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.subtitle {
+  color: #6b7280;
+  margin-bottom: 32px;
+}
+
+.profiles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
+  gap: 24px;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.profile-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.profile-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.12);
+}
+
+.profile-header {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6d28d9, #2563eb);
+  color: #fff;
+  font-weight: 700;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-basic h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.college {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.bio {
+  font-size: 14px;
+  color: #374151;
+  margin: 12px 0;
+  line-height: 1.5;
+  min-height: 42px;
+}
+
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.skill-pill {
+  padding: 5px 12px;
+  background: #eef2ff;
+  color: #4338ca;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.profile-actions button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #6d28d9, #2563eb);
+  color: white;
+  border: none;
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  opacity: 0.95;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1.5px solid #6366f1;
+  color: #4f46e5;
+  font-weight: 500;
+}
+
+.btn-outline:hover {
+  background: #eef2ff;
+}
+
+@media (max-width: 480px) {
+  .all-profiles-container {
+    padding: 40px;
+  }
+
+  .profiles-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-actions button {
+    width: 189%;
+  }
+}
+
+.profiles-grid {
+  position: relative;
+}
+
+.profile-card {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  transform: none !important;
+}

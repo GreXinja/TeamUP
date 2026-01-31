@@ -14,7 +14,6 @@ export default function Login() {
 
   const navigate = useNavigate();
 
-
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -22,28 +21,27 @@ export default function Login() {
     });
   };
 
- const handleLogin = async () => {
-  try {
-    const res = await axios.post(
-      "http://localhost:5000/api/auth/login",
-      formData
-    );
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-    // save token
-    localStorage.setItem("token", res.data.token);
-    localStorage.setItem("user", JSON.stringify(res.data.user));
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        formData,
+      );
 
-    toast.success("Welcome back 🎉");
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
-    setTimeout(() => {
-      navigate("/");
-    }, 1200);
-  } catch (err) {
-    toast.error(
-      err.response?.data?.message || "Login failed ❌"
-    );
-  }
-};
+      toast.success("Welcome back 🎉");
+
+      setTimeout(() => {
+        navigate("/");
+      }, 1200);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Login failed ❌");
+    }
+  };
 
   return (
     <div className="login-container">
@@ -147,20 +145,20 @@ export default function Login() {
                 </button>
               </div>
             </div>
-
-            <button className="login-btn" onClick={handleLogin}>
-              Log in
-              <svg
-                className="arrow-icon"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </button>
-
+            <form className="login-form" onSubmit={handleLogin}>
+              <button className="login-btn" onClick={handleLogin}>
+                Log in
+                <svg
+                  className="arrow-icon"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </button>
+            </form>
             <p className="signup-text">
               Don't have an account?{" "}
               <Link to="/signup" className="signup-link">

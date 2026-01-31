@@ -11,15 +11,20 @@ export default function Navbar() {
   const navigate = useNavigate();
   const isLoggedIn = !!localStorage.getItem("token");
 
-  const user = JSON.parse(localStorage.getItem("user")); 
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const navItems = [
-    { label: "Home", path: "/" },
-    { label: "Hackathons", path: "/hackathons" },
-    { label: "Find Teammates", path: "/teammates" },
+    { key: "home", label: "Home", path: "/" },
+    { key: "hackathons", label: "Hackathons", path: "/hackathons" },
     {
+      key: "find-teammates",
+      label: "Find Teammates",
+      path: user ? `/find-teammates/${user.id}` : "/login",
+    },
+    {
+      key: "dashboard",
       label: "Dashboard",
-      path: user ? `/dashboard/${user.id}` : "/login", 
+      path: user ? `/dashboard/${user.id}` : "/login",
     },
   ];
 
@@ -51,12 +56,12 @@ export default function Navbar() {
   }, []);
 
   const handleLogout = () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("user"); 
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
 
-  toast.success("Logged out successfully 👋");
-  navigate("/login");
-};
+    toast.success("Logged out successfully 👋");
+    navigate("/login");
+  };
 
   return (
     <>
