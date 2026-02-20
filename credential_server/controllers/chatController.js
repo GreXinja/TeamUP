@@ -177,10 +177,18 @@ module.exports.authMiddleware = (req, res, next) => {
 
   try {
     const token = authHeader.split(" ")[1];
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+    console.log("DECODED:", decoded);
+
+    // ✅ THIS IS THE FIX
     req.user = { id: decoded.userId };
+
+    console.log("req.user set to:", req.user);
+
     next();
+
   } catch (err) {
     console.error("JWT ERROR:", err.message);
     return res.status(401).json({ message: "Token invalid" });
@@ -188,18 +196,37 @@ module.exports.authMiddleware = (req, res, next) => {
 };
 
 exports.getOrCreateConversation = async (req, res) => {
-  const userId = req.user.id;
-  const { otherUserId } = req.params;
+  try {
+    // ✅ FIXED HERE
+    const userId = req.user?.id;
 
-  let conversation = await Conversation.findOne({
-    participants: { $all: [userId, otherUserId] },
-  });
+    const { otherUserId } = req.params;
 
-  if (!conversation) {
-    conversation = await Conversation.create({
-      participants: [userId, otherUserId],
+    console.log("userId:", userId);
+    console.log("otherUserId:", otherUserId);
+
+    if (!userId || !otherUserId) {
+      return res.status(400).json({
+        message: "userId or otherUserId missing",
+      });
+    }
+
+    let conversation = await Conversation.findOne({
+      participants: { $all: [userId, otherUserId] },
+    });
+
+    if (!conversation) {
+      conversation = await Conversation.create({
+        participants: [userId, otherUserId],
+      });
+    }
+
+    res.json({ conversationId: conversation._id });
+
+  } catch (err) {
+    console.error("GET OR CREATE CONVERSATION ERROR:", err);
+    res.status(500).json({
+      message: "Failed to create conversation",
     });
   }
-
-  res.json({ conversationId: conversation._id });
 };
